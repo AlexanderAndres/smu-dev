@@ -100,34 +100,34 @@ const Map = () => {
                     ref.current = document.createElement("div");
                     // Render a Marker Component on our new DOM node
                     // Create a root.
-                    console.log('Local type:', feature.properties.localType)
+                    //console.log('Local type:', feature.properties.localType)
                     const root = createRoot(ref.current);
                     switch (feature.properties.localType) {
                         case 'UNI':
                             root.render(
                                 <Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
-                                    <MarkerUnimarc className={(feature.properties.alert == true) ? 'alert' : ''} />
+                                    <MarkerUnimarc className={(feature.properties.alert == true) ? 'uniAlert' : ''} />
                                 </Marker>
                             );
                             break;
                         case 'ALVI':
                             root.render(
                                 <Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
-                                    <MarkerAlvi className={(feature.properties.alert == true) ? 'alert' : ''} />
+                                    <MarkerAlvi className={(feature.properties.alert == true) ? 'alviAlert' : ''} />
                                 </Marker>
                             );
                             break;
                         case 'M10':
                             root.render(
                                 <Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
-                                    <MarkerSuper10 className={(feature.properties.alert == true) ? 'alert' : ''} />
+                                    <MarkerSuper10 className={(feature.properties.alert == true) ? 'S10Alert' : ''} />
                                 </Marker>
                             );
                             break;
                         case 'S10':
                             root.render(
                                 <Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
-                                    <MarkerSuper10 className={(feature.properties.alert == true) ? 'alert' : ''} />
+                                    <MarkerSuper10 className={(feature.properties.alert == true) ? 'S10Alert' : ''} />
                                 </Marker>
                             );
                             break;
