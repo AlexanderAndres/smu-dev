@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getUserMarkers } from '../../services/getUserMarkers';
 import Loader from '../loader/Loader';
 import Navbar from '../navbar/Navbar';
+import LocalImage from '../../assets/unimarcLinares1.jpeg'
 
 const Local = () => {
     let { ceco } = useParams();
@@ -15,6 +16,7 @@ const Local = () => {
             const filter = data.filter(local => local.ceco == ceco)
             setLocal(filter[0])
         })
+
 
     }, [])
 
@@ -33,6 +35,7 @@ const Local = () => {
             <p><b>Local City: </b>{local.city}</p>
             <p><b>Local Region: </b>{local.region}</p>
             <p><b>Local Alert: </b>{(local.alert == false) ? 'No tiene alerta' : 'Tiene alerta, revisa!'}</p>
+            <img src={LocalImage} alt="" />
         </div>
     )
 }

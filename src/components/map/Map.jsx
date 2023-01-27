@@ -7,6 +7,11 @@ import { getUserMarkers } from '../../services/getUserMarkers';
 import Loader from '../loader/Loader';
 import Navbar from '../navbar/Navbar';
 import { redirect, useNavigate } from 'react-router-dom';
+import FloatingNavbar from '../bar/FloatingNavbar';
+
+import MarkerUnimarc from '../../Markers/MarkerUnimarc';
+import MarkerAlvi from '../../Markers/MarkerAlvi';
+import MarkerSuper10 from '../../Markers/MarkerSuper10';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiYmFsYW54Y2UiLCJhIjoiY2xjbTZucGZ5M2tlYTNvcDR6amhwbTh1eCJ9.wFC-K6LRK1r__17CIt_ypw'
 
@@ -64,7 +69,6 @@ const Map = () => {
                 });
                 //console.log('GeoJson:', geoJson)
                 setLocales(geoJson)
-
                 setLoading(false)
 
             })
@@ -96,10 +100,39 @@ const Map = () => {
                     ref.current = document.createElement("div");
                     // Render a Marker Component on our new DOM node
                     // Create a root.
+                    console.log('Local type:', feature.properties.localType)
                     const root = createRoot(ref.current);
-                    root.render(<Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
-                        <UnimarPoint className={(feature.properties.alert == true) ? 'alert' : ''} />
-                    </Marker>);
+                    switch (feature.properties.localType) {
+                        case 'UNI':
+                            root.render(
+                                <Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
+                                    <MarkerUnimarc className={(feature.properties.alert == true) ? 'alert' : ''} />
+                                </Marker>
+                            );
+                            break;
+                        case 'ALVI':
+                            root.render(
+                                <Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
+                                    <MarkerAlvi className={(feature.properties.alert == true) ? 'alert' : ''} />
+                                </Marker>
+                            );
+                            break;
+                        case 'M10':
+                            root.render(
+                                <Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
+                                    <MarkerSuper10 className={(feature.properties.alert == true) ? 'alert' : ''} />
+                                </Marker>
+                            );
+                            break;
+                        case 'S10':
+                            root.render(
+                                <Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
+                                    <MarkerSuper10 className={(feature.properties.alert == true) ? 'alert' : ''} />
+                                </Marker>
+                            );
+                            break;
+
+                    }
 
                     // Create a Mapbox Marker at our new DOM node
                     new mapboxgl.Marker(ref.current).setLngLat(feature.geometry.coordinates).addTo(map);
