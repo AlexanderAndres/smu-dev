@@ -1,23 +1,14 @@
-import Map from './components/map/Map'
-//import { useEffect } from 'react'
-//import FloatingNavbar from './components/bar/FloatingNavbar'
-//import NewMap from './components/map/NewMap'
-//import { getUserMarkers } from './services/getUserMarkers'
+import Map from './components/map/NewMap'
+
 import './App.css'
+import Login from './components/login/Login'
+import Sidebar from './components/sidebar/Sidebar'
 
 function App() {
 
-  const items = [
-    { id: 1, url: '/', label: 'Home' },
-    { id: 2, url: '/', label: 'Dashboard' },
-    { id: 3, url: '/', label: 'Filters' },
-    { id: 4, url: '/', label: 'Users' },
-  ]
-  //<FloatingNavbar items={items} />
-
   return (
     <>
-      <Map />
+      <Sidebar/>
     </>
   )
 }

@@ -1,0 +1,48 @@
+.dark {
+    background-color: #252525;
+    color: #e3e3e3;
+}
+
+.light {
+    background-color: #ffffff;
+    color:#252525;
+}
+
+.container {
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.local-container {
+    width: 100vw;
+    min-height: 100vh;
+}
+/*
+.local-container {
+    width: 100vw;
+    min-height: 100vh;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.sq-important {
+    background-color: #fbfbfb;
+    width: 100%;
+}
+
+
+.sq-local-image img {
+    height: 200px;
+    width: auto;
+}
+
+.sq-local-image {
+    height: 400px;
+    width: 400px;
+    border-radius: 20px;
+}
+
+*/

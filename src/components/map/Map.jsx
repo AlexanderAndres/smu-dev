@@ -1,13 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { createRoot } from 'react-dom/client';
 import mapboxgl from 'mapbox-gl'
-import './map.css'
-import UnimarPoint from '../../assets/UnimarcPoint'
+import { createRoot } from 'react-dom/client';
 import { getUserMarkers } from '../../services/getUserMarkers';
+import { useNavigate } from 'react-router-dom';
 import Loader from '../loader/Loader';
 import Navbar from '../navbar/Navbar';
-import { redirect, useNavigate } from 'react-router-dom';
-import FloatingNavbar from '../bar/FloatingNavbar';
+
+import './map.css'
 
 import MarkerUnimarc from '../../Markers/MarkerUnimarc';
 import MarkerAlvi from '../../Markers/MarkerAlvi';
@@ -33,13 +32,18 @@ const Map = () => {
 
     const [lng, setLng] = useState(-71.5433);
     const [lat, setLat] = useState(-33.0029);
-    const [zoom, setZoom] = useState(13);
+    const [zoom, setZoom] = useState(6);
 
     const [locales, setLocales] = useState({})
     const [loading, setLoading] = useState(true)
     const [mapLoading, setMapLoading] = useState(true)
     const [popUpInfo, setPopupInfo] = useState(null)
+
+    const [coordinates, setCoordinates] = useState(null);
+
     const navigate = useNavigate();
+
+    var coord = [];
 
     useEffect(() => {
         // Here was the fetch
@@ -79,19 +83,33 @@ const Map = () => {
     useEffect(() => {
         //console.log('Locales...:', locales)
         if (loading == false) {
+            const jump = locales.data.features.find((elem) => elem)
             const map = new mapboxgl.Map({
                 container: mapContainer.current,
-                style: 'mapbox://styles/mapbox/streets-v12',
-                center: [-71.24411010742188, -34.98127365112305],
-                zoom: 15
+                style: 'mapbox://styles/balanxce/clct3r28c000314n7kkbug9o9',
+                center: jump.geometry.coordinates,
+                //center: [-75.28976354489966, -35.30218725127498],
+                zoom: 14
             })
+            //console.log('Elem:', jump.geometry.coordinates)
+            /*
+            const jump = locales.data.features.find((elem) => elem)
+            //console.log('Elem:', jump.geometry.coordinates)
 
-            // Add navigation control (the +/- zoom buttons)
+            map.flyTo({
+                center: jump.geometry.coordinates,
+                zoom: 14,
+                speed: 1.5,
+                curve: 4,
+                easing(t) {
+                    return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+                }
+            });
+            */
             map.addControl(new mapboxgl.NavigationControl(), 'bottom-right')
 
             map.on("load", () => {
                 //console.log('Map loaded')
-
                 // Render custom marker components
                 locales.data.features.forEach((feature) => {
                     // Create a React ref
@@ -117,14 +135,7 @@ const Map = () => {
                                 </Marker>
                             );
                             break;
-                        case 'M10':
-                            root.render(
-                                <Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
-                                    <MarkerSuper10 className={(feature.properties.alert == true) ? 'S10Alert' : ''} />
-                                </Marker>
-                            );
-                            break;
-                        case 'S10':
+                        case 'M10' || 'S10':
                             root.render(
                                 <Marker onClick={() => markerClicked(feature.properties.ceco)} feature={feature} >
                                     <MarkerSuper10 className={(feature.properties.alert == true) ? 'S10Alert' : ''} />
@@ -164,9 +175,6 @@ const Map = () => {
                     // Copy coordinates array.
                     const coordinates = e.features[0].geometry.coordinates.slice();
                     const description = e.features[0].properties;
-
-                    //console.log(description)
-
                     // Ensure that if the map is zoomed out such that multiple
                     // copies of the feature are visible, the popup appears
                     // over the copy being pointed to.
@@ -201,7 +209,7 @@ const Map = () => {
     }, [locales]);
 
     const markerClicked = (ceco) => {
-        console.log(`/local/${ceco}`)
+        //console.log(`/local/${ceco}`)
         navigate(`/local/${ceco}`);
     };
 

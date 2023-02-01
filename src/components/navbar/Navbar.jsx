@@ -13,12 +13,12 @@ const Navbar = () => {
             <div className="nav-logo">
                 <SmuLogo className='logo' />
             </div>
-            <div className="nav-items d-flex">
-                <ul className='font-sans text-sm font-light'>
-                    <li><a onClick={handdleRedirect} href="">MAPA</a></li>
-                    <li><a onClick={handdleRedirect} href="">ALERTAS</a></li>
-                    <li><a onClick={handdleRedirect} href="">DASHBOARD</a></li>
-                    <li><a onClick={handdleRedirect} href="">FILTROS</a></li>
+            <div className="nav-items d-flex sm:flex-col lg:flex-row">
+                <ul className='font-sans text-sm font-light sm:text-center'>
+                    <li className='sm:mb-2 lg:mb-0'><a onClick={handdleRedirect} href="">MAPA</a></li>
+                    <li className='sm:mb-2 lg:mb-0'><a onClick={handdleRedirect} href="">ALERTAS</a></li>
+                    <li className='sm:mb-2 lg:mb-0'><a onClick={handdleRedirect} href="">DASHBOARD</a></li>
+                    <li className='sm:mb-2 lg:mb-0'><a onClick={handdleRedirect} href="">FILTROS</a></li>
                 </ul>
             </div>
         </div>
