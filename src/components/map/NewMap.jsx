@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl'
 import { createRoot } from 'react-dom/client';
 import { useDispatch, useSelector } from "react-redux"
-import { fetchMarkers } from "../../app/slicer/markersSlice"
+import { fetchMarkers, setMarkers } from "../../app/slicer/markersSlice"
 import Marker from '../marker/Marker'
 
 import './map.css'
@@ -22,20 +22,24 @@ const Map = () => {
     const navigate = useNavigate();
     const mapContainer = useRef(null);
 
+    // Local state
+    const [dataFetched, setDataFetched] = useState(false);
+
     const user = useSelector((state) => {
-        if(state.auth.user){
-            console.log(state.auth.user.user)
+        if (state.auth) {
+            //console.log('State in newMap', state.auth.user)
+            return state.auth.user
         } else {
             return
         }
     })
-    
-    // Local state
-    const [dataFetched, setDataFetched] = useState(false);
 
     useEffect(() => {
         if (!dataFetched) {
-            dispatch(fetchMarkers())
+            dispatch(fetchMarkers(user.rut)).then((data) => {
+                //console.log('Data from fetch markers', data.payload)
+                dispatch(setMarkers(data.payload));
+            })
             setDataFetched(true)
         }
     }, [dispatch, dataFetched, markers]);
@@ -106,8 +110,8 @@ const Map = () => {
                             'type': 'circle',
                             'source': 'locations',
                             'paint': {
-                                'circle-radius': 20,
-                                'circle-stroke-width': 2,
+                                'circle-radius': 10,
+                                'circle-stroke-width': 0,
                                 'circle-color': '#ff0000'
                             }
                         });
@@ -160,7 +164,7 @@ const Map = () => {
         //console.log(`/local/${ceco}`)
         navigate(`/local/${ceco}`)
     };
-
+    
     return (
         <div>
             <div ref={mapContainer} className="map-container" />

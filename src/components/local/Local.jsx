@@ -4,20 +4,19 @@ import { getUserMarkers } from '../../services/getUserMarkers';
 import Loader from '../loader/Loader';
 import LocalImage from '../../assets/unimarcLinares1.jpeg'
 import './local.css'
+import Sidebar from '../sidebar/Sidebar';
 
 const Local = () => {
-    let { ceco } = useParams();
+    const { ceco } = useParams();
     const [local, setLocal] = useState({})
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         getUserMarkers().then((data) => {
-            const filter = data.filter(local => local.ceco == ceco)
+            const filter = data.filter(local => local.ceco === ceco)
             setLocal(filter[0])
             console.log('Locals list:', data)
         })
-
-
     }, [])
 
     useEffect(() => {
@@ -31,9 +30,7 @@ const Local = () => {
         <>
             {<Loader show={(loading == true) ? true : false} />}
             <div className="container">
-                <div className="menu-container absolute bg-orange-300 h-screen w-[25%]">
-
-                </div>
+                <Sidebar />
                 <div className='local-container'>
                     <div className="grid grid-cols-3 place-items-center place-content-center pt-6">
                         <div className="bg-rose-900 col-span-2 w-[600px] h-[200px] rounded-3xl"> col 2</div>

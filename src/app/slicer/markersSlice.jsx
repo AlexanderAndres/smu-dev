@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
 
 const initialState = {}
@@ -15,11 +15,14 @@ const markersSlice = createSlice({
 
 export const { setMarkers } = markersSlice.actions;
 
-export const fetchMarkers = () => async (dispatch) => {
-    try {
-        await axios.get("https://smu-api.herokuapp.com/api/local").then((data) => {
-            //console.log('Promesa:', data.data.data)
+export const handleMarkers = (locals) => {
+    console.log('Locals to set markers', locals)
+}
 
+export const fetchMarkers = createAsyncThunk('markers/fetchRut', async (user) => {
+    //console.log('User rut to fetch:', user)
+    const response = await axios.get(`https://smu-api.herokuapp.com/api/local/rut/${user}`)
+        .then((resp) => {
             const geoJson = {
                 'type': 'geojson',
                 'data': {
@@ -28,7 +31,7 @@ export const fetchMarkers = () => async (dispatch) => {
                 }
             }
 
-            data.data.data.forEach((local) => {
+            resp.data.data.forEach((local) => {
                 geoJson.data.features.push({
                     "type": "Feature",
                     "properties": local,
@@ -41,14 +44,31 @@ export const fetchMarkers = () => async (dispatch) => {
                     }
                 });
             });
-            //console.log('GeoJson:', geoJson)
-            dispatch(setMarkers(geoJson));
-        });
+            //console.log('geoJson:', geoJson)
+            return geoJson
+        })
+    return response
 
-        //dispatch(setMarkers(response.data.data));
-    } catch (error) {
-        console.log(error);
-    }
-};
+    /*
+        resp.data.data.forEach((local) => {
+            geoJson.data.features.push({
+                "type": "Feature",
+                "properties": local,
+                "geometry": {
+                    "coordinates": [
+                        `${local.longitude}`,
+                        `${local.latitude}`
+                    ],
+                    "type": "Point"
+                }
+            });
+        });
+        //console.log('GeoJson:', geoJson)
+        dispatch(setMarkers(geoJson));
+    })
+    */
+    //console.log('Response from markers:', response.data.data)
+    //const response = await axios.post('/api/login', credentials)
+})
 
 export default markersSlice.reducer;

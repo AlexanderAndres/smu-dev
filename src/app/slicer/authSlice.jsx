@@ -2,28 +2,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const login = createAsyncThunk('auth/login', async (credentials) => {
-    console.log('Credentials:', credentials)
-    const response = await new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(
-                {
-                    data: {
-                        status: "success",
-                        token: "abcdefghijklmnopqrstuvwxyz",
-                        user: {
-                            id: 1,
-                            name: "John Smith",
-                            email: "john@example.com",
-                            role: "admin"
-                        }
-                    }
-                }
-            )
-        }, 1500)
-    }).then((response) => {
-        console.log('Data:', response)
-        return response
-    })
+    console.log('Credentials authSlice:', credentials)
+
+    const response = await axios.get(`https://smu-api.herokuapp.com/api/login/${credentials.email}/${credentials.password}`)
+
     return response.data
     //const response = await axios.post('/api/login', credentials)
 })
@@ -45,12 +27,12 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 state.user = action.payload
-                console.log('succeeded send to act:', action.payload)
+                //console.log('succeeded send to act:', action.payload)
             })
             .addCase(login.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
-                console.log('failed send to act:', action.error.message)
+                //console.log('failed send to act:', action.error.message)
             })
     }
 })
